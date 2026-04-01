@@ -1,4 +1,6 @@
 const gameArea = document.querySelector('.game-area');
+const cards = document.querySelectorAll('.card');
+const resetButton = document.querySelector('.reset');
 
 let firstActiveCard = null;
 let secondActiveCard = null;
@@ -19,7 +21,7 @@ const svgS = [
 function insertSVGsIntoCards() {
 	const svgPairs = [...svgS, ...svgS].sort(() => Math.random() - 0.5);
 
-	document.querySelectorAll('.card').forEach((card, i) => {
+	cards.forEach((card, i) => {
 		const img = document.createElement('img');
 		img.src = `../assets/images/${svgPairs[i]}.svg`;
 		img.className = 'card-img hidden';
@@ -31,10 +33,7 @@ function insertSVGsIntoCards() {
 insertSVGsIntoCards();
 
 function toggleCardImages(card) {
-	const [questionMarkImg, foodImg] = [
-		card.firstElementChild,
-		card.lastElementChild,
-	];
+	const [questionMarkImg, foodImg] = [card.firstElementChild, card.lastElementChild];
 
 	setTimeout(() => {
 		foodImg.classList.toggle('hidden');
@@ -102,16 +101,23 @@ gameArea.addEventListener('click', function (e) {
 	}
 });
 
+resetButton.addEventListener('click', resetGame);
+
 function resetGame() {
-	document.querySelectorAll('.card').forEach((card) => {
+	firstActiveCard = null;
+	secondActiveCard = null;
+
+	cards.forEach((card) => {
 		card.classList.remove('success', 'flip-vertical-right', 'popup');
 
-		card.removeChild(card.lastElementChild);
+		setTimeout(() => {
+			card.removeChild(card.lastElementChild);
 
-		card.firstElementChild.classList.remove('hidden');
+			card.firstElementChild.classList.remove('hidden');
+		}, 250);
 	});
 
-	insertSVGsIntoCards();
+	setTimeout(insertSVGsIntoCards, 250);
 
 	gameArea.classList.remove('hanging');
 }
