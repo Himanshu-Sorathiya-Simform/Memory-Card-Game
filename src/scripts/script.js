@@ -110,14 +110,14 @@ function resetGame() {
 	cards.forEach((card) => {
 		card.classList.remove('success', 'flip-vertical-right', 'popup');
 
-		setTimeout(() => {
-			card.removeChild(card.lastElementChild);
+		card.firstElementChild.classList.remove('hidden');
 
-			card.firstElementChild.classList.remove('hidden');
-		}, 250);
+		card.removeChild(card.lastElementChild);
 	});
 
 	setTimeout(insertSVGsIntoCards, 250);
 
-	gameArea.classList.remove('hanging');
+	gameArea.classList.remove('rollin', 'hanging');
+
+	setTimeout(() => gameArea.classList.add('rollin'), 0);
 }
